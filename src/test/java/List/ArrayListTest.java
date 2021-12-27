@@ -51,6 +51,23 @@ class ArrayListTest {
     }
 
     @Test
+    @DisplayName("맨 삽입 실패 - 인덱스 범위 초과")
+    public void addFailTest(){
+        IndexOutOfBoundsException e1 = assertThrows(
+                IndexOutOfBoundsException.class,
+                ()->{arr.add(-1, -1);}
+        );
+
+        arr.add(1);
+        arr.add(2);
+
+        IndexOutOfBoundsException e2 = assertThrows(
+                IndexOutOfBoundsException.class,
+                ()->{arr.add(3, 3);}
+        );
+    }
+
+    @Test
     public void getTest(){
         int addSize = 4;
         fillArr(addSize);

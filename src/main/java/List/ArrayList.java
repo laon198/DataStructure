@@ -26,7 +26,7 @@ public class ArrayList<E> {
     }
 
     public void add(E data, int idx){
-        validIdx(idx);
+        validAddingIdx(idx);
 
         if(size>=elements.length){
             resize();
@@ -38,19 +38,19 @@ public class ArrayList<E> {
     }
 
     public E get(int idx){
-        validIdx(idx);
+        validExistingIdx(idx);
 
         return elements[idx];
     }
 
     public void set(E data, int idx) {
-        validIdx(idx);
+        validExistingIdx(idx);
 
         elements[idx] = data;
     }
 
     public void remove(int idx) {
-        validIdx(idx);
+        validExistingIdx(idx);
         shiftLeft(idx);
         size--;
     }
@@ -67,8 +67,14 @@ public class ArrayList<E> {
         }
     }
 
-    private void validIdx(int idx) {
-        if(idx<0 || idx>maxIdx()){
+    private void validAddingIdx(int idx){
+        if(idx<0 || idx>size){
+            throw new IndexOutOfBoundsException();
+        }
+    }
+
+    private void validExistingIdx(int idx) {
+        if(idx<0 || idx>size-1){
             throw new IndexOutOfBoundsException();
         }
     }
