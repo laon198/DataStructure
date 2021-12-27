@@ -1,7 +1,6 @@
 package List;
 
-public class SinglyLinkedList<E> {
-
+public class SinglyLinkedList<E> implements List<E> {
     private static class Node<E>{
         private E data;
         private Node<E> next;

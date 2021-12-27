@@ -1,6 +1,6 @@
 package List;
 
-public class ArrayList<E> {
+public class ArrayList<E> implements List<E> {
     private E[] elements;
     private int size = 0;
     private final int defaultCapacity = 4;

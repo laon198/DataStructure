@@ -11,7 +11,7 @@ class ArrayListTest {
 
     @BeforeEach
     void setUp() {
-        arr = new ArrayList<>();
+        arr = new ArrayList<Integer>();
     }
 
     @Test
