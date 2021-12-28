@@ -70,26 +70,32 @@ public class DoublyPositionalList<E> {
 
     public Position<E> getNextOf(Position<E> position){
         checkEmpty();
-        //tail 일때 예외?
+
+        if(position==tail){
+            throw new IllegalArgumentException();
+        }
+
         Node<E> next = ((Node<E>) position).getNext();
         return next;
     }
 
     public Position<E> getPrevOf(Position<E> position){
         checkEmpty();
-        //head일때 예외?
+
+        if(position==head){
+            throw new IllegalArgumentException();
+        }
+
         Node<E> prev = ((Node<E>) position).getPrev();
         return prev;
     }
 
     public void set(Position<E> position, E data){
-        // TODO : pos valid logic?
         Node<E> targetNode = (Node<E>)position;
         targetNode.setData(data);
     }
 
     public void remove(Position<E> position){
-        // TODO : pos valid logic?
         Node<E> targetNode = (Node<E>) position;
         Node<E> prev = targetNode.getPrev();
         Node<E> next = targetNode.getNext();
