@@ -1,6 +1,6 @@
 package List;
 
-public class SinglyLinkedList<E> implements List<E> {
+public class SinglyLinkedList<E> extends AbstractList<E>{
     private static class Node<E>{
         private E data;
         private Node<E> next;
@@ -18,16 +18,12 @@ public class SinglyLinkedList<E> implements List<E> {
 
     private Node<E> head;
     private Node<E> tail;
-    private int size;
 
     public SinglyLinkedList(){
         head = new Node<>(null, null);
         tail = head;
         size = 0;
     }
-
-    public int size(){ return size;}
-    public boolean isEmpty(){ return size==0;}
 
     public void add(E data){
         Node<E> newNode = new Node<>(data, tail.getNext());
@@ -85,17 +81,5 @@ public class SinglyLinkedList<E> implements List<E> {
                     curNode=curNode.getNext(), curIdx++){}
 
         return curNode;
-    }
-
-    private void validExistingIndex(int idx){
-        if(idx<0 || idx>size-1){
-            throw new IndexOutOfBoundsException();
-        }
-    }
-
-    private void validAddingIndex(int idx){
-        if(idx<0 || idx>size){
-            throw new IndexOutOfBoundsException();
-        }
     }
 }

@@ -1,8 +1,7 @@
 package List;
 
-public class ArrayList<E> implements List<E> {
+public class ArrayList<E> extends AbstractList<E> {
     private E[] elements;
-    private int size = 0;
     private final int defaultCapacity = 4;
 
     public ArrayList(){
@@ -13,8 +12,6 @@ public class ArrayList<E> implements List<E> {
         elements = (E[])new Object[capacity];
     }
 
-    public int size(){ return size;}
-    public boolean isEmpty(){ return size==0;}
     private int maxIdx(){ return size-1; }
 
     public void add(E data){
@@ -26,7 +23,7 @@ public class ArrayList<E> implements List<E> {
     }
 
     public void add(E data, int idx){
-        validAddingIdx(idx);
+        validAddingIndex(idx);
 
         if(size>=elements.length){
             resize();
@@ -38,19 +35,19 @@ public class ArrayList<E> implements List<E> {
     }
 
     public E get(int idx){
-        validExistingIdx(idx);
+        validExistingIndex(idx);
 
         return elements[idx];
     }
 
     public void set(E data, int idx) {
-        validExistingIdx(idx);
+        validExistingIndex(idx);
 
         elements[idx] = data;
     }
 
     public void remove(int idx) {
-        validExistingIdx(idx);
+        validExistingIndex(idx);
         shiftLeft(idx);
         size--;
     }
@@ -67,22 +64,9 @@ public class ArrayList<E> implements List<E> {
         }
     }
 
-    private void validAddingIdx(int idx){
-        if(idx<0 || idx>size){
-            throw new IndexOutOfBoundsException();
-        }
-    }
-
-    private void validExistingIdx(int idx) {
-        if(idx<0 || idx>size-1){
-            throw new IndexOutOfBoundsException();
-        }
-    }
-
     private void resize() {
         E[] tmp = (E[])new Object[elements.length*2];
         System.arraycopy(elements, 0, tmp, 0, elements.length);
         elements = tmp;
     }
-
 }

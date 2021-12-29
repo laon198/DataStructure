@@ -1,6 +1,6 @@
 package List;
 
-public interface List<E> {
+public interface List<E> extends Iterable<E> {
     void add(E data);
     void add(E data, int idx);
     E get(int idx);
