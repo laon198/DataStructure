@@ -111,6 +111,35 @@ class DoublyPositionalListTest {
         assertEquals(8, list.getLast().getData());
     }
 
+    @Test
+    @DisplayName("lazy iterator 테스트 - position")
+    public void posIterTest(){
+        int addSize = 10;
+        fillList(addSize);
+
+        Position<Integer> p = list.getFirst();
+
+        for(Position<Integer> pos : list.positions()){
+            assertEquals(pos, p);
+            assertEquals(pos.getData(), p.getData());
+            p = list.getNextOf(p);
+        }
+    }
+
+    @Test
+    @DisplayName("lazy iterator테스트 - element")
+    public void elementIterTest(){
+        int addSize = 10;
+        fillList(addSize);
+
+        Position<Integer> p = list.getFirst();
+
+        for(Integer data : list){
+            assertEquals(data, p.getData());
+            p = list.getNextOf(p);
+        }
+    }
+
     private void fillList(int addSize){
         for(int i=0; i<addSize; i++){
             list.add(i);

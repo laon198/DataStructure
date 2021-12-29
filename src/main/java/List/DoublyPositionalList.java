@@ -1,6 +1,10 @@
 package List;
 
-public class DoublyPositionalList<E> {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class DoublyPositionalList<E> implements Iterable<E> {
+
     private static class Node<E> implements Position<E>{
         private E data;
         private Node<E> prev;
@@ -38,14 +42,14 @@ public class DoublyPositionalList<E> {
         addBetween(tail.getPrev(), tail, data);
     }
 
-    public void addNext(Position position, E data){
+    public void addNext(Position<E> position, E data){
         Node<E> prev = (Node<E>) position;
         Node<E> next = prev.getNext();
 
         addBetween(prev, next, data);
     }
 
-    public void addPrev(Position position, E data){
+    public void addPrev(Position<E> position, E data){
         Node<E> next = (Node<E>) position;
         Node<E> prev = next.getPrev();
 
@@ -72,7 +76,7 @@ public class DoublyPositionalList<E> {
         checkEmpty();
 
         if(position==tail){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("position is last position");
         }
 
         Node<E> next = ((Node<E>) position).getNext();
@@ -83,7 +87,7 @@ public class DoublyPositionalList<E> {
         checkEmpty();
 
         if(position==head){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("position is first position");
         }
 
         Node<E> prev = ((Node<E>) position).getPrev();
@@ -115,5 +119,68 @@ public class DoublyPositionalList<E> {
         if(isEmpty()){
             throw new IllegalStateException("list is empty");
         }
+    }
+
+    private class PositionIterable implements Iterable<Position<E>>{
+        @Override
+        public Iterator<Position<E>> iterator() {
+            return new PositionIterator();
+        }
+    }
+
+    private class PositionIterator implements Iterator<Position<E>>{
+        private Position<E> cursor;
+        private Position<E> recent;
+
+        private PositionIterator() throws IllegalStateException{
+            cursor = DoublyPositionalList.this.getFirst();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return cursor!=DoublyPositionalList.this.tail;
+        }
+
+        @Override
+        public Position<E> next() {
+            if(!hasNext()){
+                throw new NoSuchElementException();
+            }
+
+            recent = cursor;
+            cursor = DoublyPositionalList.this.getNextOf(cursor);
+            return recent;
+        }
+    }
+
+    private class ListIterator implements Iterator<E>{
+        private PositionIterator posIter;
+
+        private ListIterator(){
+            posIter = new PositionIterator();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return posIter.hasNext();
+        }
+
+        @Override
+        public E next() {
+            if(!hasNext()){
+                throw new NoSuchElementException("no next element");
+            }
+
+            return posIter.next().getData();
+        }
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return new ListIterator();
+    }
+
+    public Iterable<Position<E>> positions(){
+        return new PositionIterable();
     }
 }

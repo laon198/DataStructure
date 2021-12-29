@@ -57,6 +57,6 @@ abstract public class AbstractList<E> implements List<E> {
             tmp[i] = get(i);
         }
 
-        return new ListIterator<E>(tmp);
+        return new ListIterator<>(tmp);
     }
 }
