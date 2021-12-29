@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SinglyLinkedListTest {
@@ -128,6 +130,20 @@ class SinglyLinkedListTest {
         );
 
         assertEquals(6, list.size());
+    }
+
+    @Test
+    @DisplayName("snapshot Iterator 테스트")
+    public void iteratorTest(){
+        int addSize = 10;
+        fillList(addSize);
+
+        Iterator<Integer> iter = list.iterator();
+        list.set(-1, 3);
+
+        for(int i=1; i<=addSize; i++){
+            assertEquals(i, iter.next());
+        }
     }
 
     private void fillList(int addSize){

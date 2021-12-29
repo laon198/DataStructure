@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ArrayListTest {
@@ -113,6 +115,20 @@ class ArrayListTest {
         arr.remove(6);
         assertEquals(8, arr.get(6));
         assertEquals(8, arr.size());
+    }
+
+    @Test
+    @DisplayName("snapshot Iterator 테스트")
+    public void iteratorTest(){
+        int addSize = 10;
+        fillArr(addSize);
+
+        Iterator<Integer> iter = arr.iterator();
+        arr.set(-1, 3);
+
+        for(int i=0; i<addSize; i++){
+            assertEquals(i, iter.next());
+        }
     }
 
     private void fillArr(int addSize){
