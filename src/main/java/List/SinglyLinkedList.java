@@ -37,12 +37,12 @@ public class SinglyLinkedList<E> extends AbstractList<E>{
 
         if(idx==size){
             add(data);
+        }else{
+            Node<E> prevNode = findNode(idx-1);
+            Node<E> newNode = new Node<>(data, prevNode.getNext());
+            prevNode.setNext(newNode);
+            size++;
         }
-
-        Node<E> prevNode = findNode(idx-1);
-        Node<E> newNode = new Node<>(data, prevNode.getNext());
-        prevNode.setNext(newNode);
-        size++;
     }
 
     public E get(int idx){
