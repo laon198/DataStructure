@@ -1,10 +1,11 @@
 package Stack;
 
 import List.SinglyLinkedList;
+import List.List;
 import java.util.NoSuchElementException;
 
 public class LinkedStack<E> implements Stack<E> {
-    private SinglyLinkedList<E> list;
+    private List<E> list;
 
     public LinkedStack(){
         list = new SinglyLinkedList<E>();
