@@ -10,7 +10,11 @@ public class ArrayQueue<E> implements Queue<E> {
     private static final int defaultCapacity = 4;
 
     public ArrayQueue(){
-        elements = (E[])new Object[defaultCapacity];
+        this(defaultCapacity);
+    }
+
+    public ArrayQueue(int capacity){
+        elements = (E[])new Object[capacity];
         front = 0;
         rear = 0;
         size = 0;
