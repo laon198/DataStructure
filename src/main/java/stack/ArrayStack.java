@@ -1,7 +1,7 @@
-package Stack;
+package stack;
 
-import List.List;
-import List.ArrayList;
+import list.List;
+import list.ArrayList;
 
 import java.util.NoSuchElementException;
 

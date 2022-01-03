@@ -1,7 +1,7 @@
-package Queue;
+package queue;
 
-import List.List;
-import List.SinglyLinkedList;
+import list.List;
+import list.SinglyLinkedList;
 
 import java.util.NoSuchElementException;
 

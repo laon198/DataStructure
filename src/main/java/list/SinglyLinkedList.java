@@ -1,4 +1,4 @@
-package List;
+package list;
 
 public class SinglyLinkedList<E> extends AbstractList<E>{
     private static class Node<E>{

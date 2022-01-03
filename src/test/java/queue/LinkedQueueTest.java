@@ -1,4 +1,4 @@
-package Queue;
+package queue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -8,12 +8,12 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ArrayQueueTest {
+class LinkedQueueTest {
     private Queue<Integer> queue;
 
     @BeforeEach
-    public void setUp(){
-        queue = new ArrayQueue<Integer>();
+    void setUp() {
+        queue = new LinkedQueue<Integer>();
     }
 
     @Test

@@ -1,7 +1,7 @@
-package Stack;
+package stack;
 
-import List.SinglyLinkedList;
-import List.List;
+import list.SinglyLinkedList;
+import list.List;
 import java.util.NoSuchElementException;
 
 public class LinkedStack<E> implements Stack<E> {

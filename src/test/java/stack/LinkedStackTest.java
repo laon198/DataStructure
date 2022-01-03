@@ -1,4 +1,4 @@
-package Stack;
+package stack;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -8,12 +8,12 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ArrayStackTest {
-    private ArrayStack<Integer> stack;
+class LinkedStackTest {
+    private LinkedStack<Integer> stack;
 
     @BeforeEach
     public void setUp(){
-        stack = new ArrayStack<Integer>();
+        stack = new LinkedStack<Integer>();
     }
 
     @Test

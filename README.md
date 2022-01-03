@@ -1,7 +1,7 @@
 # DataStructure
 
 -----
-## List
+## list
 
 ### ArrayList
 [ArrayList 코드](https://github.com/laon198/DataStructure/blob/master/src/main/java/List/ArrayList.java)   

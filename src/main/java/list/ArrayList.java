@@ -1,4 +1,4 @@
-package List;
+package list;
 
 public class ArrayList<E> extends AbstractList<E> {
     private E[] elements;
