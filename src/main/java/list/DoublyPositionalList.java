@@ -62,12 +62,12 @@ public class DoublyPositionalList<E> implements Iterable<E> {
         size++;
     }
 
-    public Position<E> getFirst() throws IllegalStateException{
+    public Position<E> getFirst() throws NoSuchElementException{
         checkEmpty();
         return head.getNext();
     }
 
-    public Position<E> getLast() throws IllegalStateException{
+    public Position<E> getLast() throws NoSuchElementException{
         checkEmpty();
         return tail.getPrev();
     }
@@ -115,9 +115,9 @@ public class DoublyPositionalList<E> implements Iterable<E> {
         next.setPrev(newNode);
     }
 
-    private void checkEmpty() throws IllegalStateException {
+    private void checkEmpty() throws NoSuchElementException {
         if(isEmpty()){
-            throw new IllegalStateException("list is empty");
+            throw new NoSuchElementException("list is empty");
         }
     }
 
