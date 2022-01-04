@@ -16,6 +16,11 @@ abstract public class AbstractTree<E> implements Tree<E> {
     }
 
     @Override
+    public boolean isRoot(Position<E> pos){
+        return pos==getRoot();
+    }
+
+    @Override
     public int getHeight(){
         return getHeight(getRoot());
     }
@@ -46,5 +51,10 @@ abstract public class AbstractTree<E> implements Tree<E> {
     @Override
     public boolean isExternal(Position<E> pos){
         return getChildrenNum(pos)==0;
+    }
+
+    @Override
+    public boolean isInternal(Position<E> pos){
+        return getChildrenNum(pos)>0;
     }
 }
