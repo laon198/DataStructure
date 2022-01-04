@@ -1,7 +1,7 @@
 package deque;
 
 import list.DoublyPositionalList;
-import list.Position;
+import common.Position;
 
 public class LinkedDeque<E> implements Deque<E> {
     private DoublyPositionalList<E> list;

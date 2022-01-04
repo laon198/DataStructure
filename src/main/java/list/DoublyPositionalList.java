@@ -1,11 +1,13 @@
 package list;
 
+import common.Position;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class DoublyPositionalList<E> implements Iterable<E> {
 
-    private static class Node<E> implements Position<E>{
+    private static class Node<E> implements Position<E> {
         private E data;
         private Node<E> prev;
         private Node<E> next;

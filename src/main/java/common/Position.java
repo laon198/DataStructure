@@ -1,4 +1,4 @@
-package list;
+package common;
 
 public interface Position<E> {
     E getData();
