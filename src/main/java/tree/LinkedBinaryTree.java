@@ -18,7 +18,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
         @Override
         public E getData() {
-            return null;
+            return data;
         }
 
         public Node<E> getParent() {
@@ -54,6 +54,48 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
     public LinkedBinaryTree(){}
 
+    public void addRoot(E data) throws IllegalStateException{
+        if(!isEmpty()){
+            throw new IllegalStateException("root is already exist");
+        }
+
+        Node<E> newNode = new Node<>(data, null, null, null);
+        root = newNode;
+        size++;
+    }
+
+    public void addLeft(Position<E> pos, E data){
+        Node<E> parent = (Node<E>)pos;
+
+        Node<E> newNode = new Node<>(data, parent, null, null);
+
+        Node<E> leftNode = parent.getLeft();
+        if(leftNode!=null){
+            newNode.setLeft(leftNode);
+            leftNode.setParent(newNode);
+        }
+
+        parent.setLeft(newNode);
+
+        size++;
+    }
+
+    public void addRight(Position<E> pos, E data){
+        Node<E> parent = (Node<E>)pos;
+
+        Node<E> newNode = new Node<>(data, parent, null, null);
+
+        Node<E> rightNode = parent.getRight();
+        if(rightNode!=null){
+            newNode.setRight(rightNode);
+            rightNode.setParent(newNode);
+        }
+
+        parent.setRight(newNode);
+
+        size++;
+    }
+
     @Override
     public Position<E> getRoot() {
         return root;
@@ -81,4 +123,43 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
         return node.getParent();
     }
 
+    public void set(Position<E> pos, E data){
+        Node<E> node = (Node<E>)pos;
+        node.setData(data);
+    }
+
+    public void remove(Position<E> pos) throws IllegalStateException{
+        Node<E> node = (Node<E>) pos;
+        Node<E> parent = node.getParent();
+
+        int childNum = getChildrenNum(pos);
+        if(childNum==2){
+            throw new IllegalStateException("this node has two children");
+        }
+
+        if(isRoot(pos)){
+            root = node;
+            return;
+        }
+
+        Node<E> child = null;
+
+        if(node.getLeft()!=null){
+            child = node.getLeft();
+        }else if(node.getRight()!=null){
+            child = node.getRight();
+        }
+
+        if(parent.getLeft()==node){
+            parent.setLeft(child);
+        }else if(parent.getRight()==node){
+            parent.setRight(child);
+        }
+
+        if(child!=null){
+            child.setParent(parent);
+        }
+
+        size--;
+    }
 }

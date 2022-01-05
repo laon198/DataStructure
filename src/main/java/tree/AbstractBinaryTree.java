@@ -5,7 +5,6 @@ import list.ArrayList;
 import list.List;
 
 abstract public class AbstractBinaryTree<E> extends AbstractTree<E> implements BinaryTree<E>{
-
     @Override
     public Iterable<Position<E>> getChildren(Position<E> pos) {
         List<Position<E>> list = new ArrayList<>();

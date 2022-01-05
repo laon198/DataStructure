@@ -3,7 +3,7 @@ package tree;
 import common.Position;
 
 abstract public class AbstractTree<E> implements Tree<E> {
-    private int size=0;
+    protected int size=0;
 
     @Override
     public int size(){
