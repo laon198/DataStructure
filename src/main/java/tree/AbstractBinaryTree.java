@@ -105,19 +105,17 @@ abstract public class AbstractBinaryTree<E> extends AbstractTree<E> implements B
 
 
     private void fillListByPreorder(List<Position<E>> list, Position<E> pos){
-        list.add(pos);
-
-        if(isExternal(pos)){
+        if(pos==null){
             return;
         }
 
+        list.add(pos);
         fillListByPreorder(list, getLeft(pos));
         fillListByPreorder(list, getRight(pos));
     }
 
     private void fillListByInorder(List<Position<E>> list, Position<E> pos){
-        if(isExternal(pos)){
-            list.add(pos);
+        if(pos==null){
             return;
         }
 
@@ -127,8 +125,7 @@ abstract public class AbstractBinaryTree<E> extends AbstractTree<E> implements B
     }
 
     private void fillListByPostorder(List<Position<E>> list, Position<E> pos){
-        if(isExternal(pos)){
-            list.add(pos);
+        if(pos==null){
             return;
         }
 
