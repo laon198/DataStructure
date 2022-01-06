@@ -164,4 +164,72 @@ class LinkedBinaryTreeTest {
                 e.getMessage()
         );
     }
+
+    @Test
+    @DisplayName("preorder 테스트")
+    public void preorderTest(){
+        fillTree();
+
+        for(Position<Integer> pos : tree.preorder()){
+            System.out.print(pos.getData()+" ");
+        }
+        System.out.println();
+    }
+
+    @Test
+    @DisplayName("inorder 테스트")
+    public void inorderTest(){
+        fillTree();
+
+        System.out.print("inorder : ");
+        for(Position<Integer> pos : tree.inorder()){
+            System.out.print(pos.getData()+" ");
+        }
+        System.out.println();
+    }
+
+    @Test
+    @DisplayName("postorder 테스트")
+    public void postorderTest(){
+        fillTree();
+
+        System.out.print("postorder : ");
+        for(Position<Integer> pos : tree.postorder()){
+            System.out.print(pos.getData()+" ");
+        }
+        System.out.println();
+    }
+
+    @Test
+    @DisplayName("levelorder 테스트")
+    public void levelorderTest(){
+        fillTree();
+
+        System.out.print("levelorder : ");
+        for(Position<Integer> pos : tree.levelorder()){
+            System.out.print(pos.getData()+" ");
+        }
+        System.out.println();
+    }
+
+    private void fillTree(){
+        int data = 0;
+        tree.addRoot(data);
+        Position<Integer> root = tree.getRoot();
+        data++;
+        tree.addLeft(root, data);
+        data++;
+        tree.addRight(root, data);
+        Position<Integer> left = tree.getLeft(root);
+        Position<Integer> right = tree.getRight(root);
+
+        data++;
+        tree.addLeft(left, data);
+        data++;
+        tree.addRight(left, data);
+        data++;
+        tree.addLeft(right, data);
+        data++;
+        tree.addRight(right, data);
+    }
 }

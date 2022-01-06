@@ -3,6 +3,8 @@ package tree;
 import common.Position;
 import list.ArrayList;
 import list.List;
+import queue.LinkedQueue;
+import queue.Queue;
 
 abstract public class AbstractBinaryTree<E> extends AbstractTree<E> implements BinaryTree<E>{
     @Override
@@ -46,5 +48,92 @@ abstract public class AbstractBinaryTree<E> extends AbstractTree<E> implements B
         }
 
         return null;
+    }
+
+    @Override
+    public Iterable<Position<E>> preorder(){
+        List<Position<E>> list = new ArrayList<>();
+
+        fillListByPreorder(list, getRoot());
+
+        return list;
+    }
+
+    @Override
+    public Iterable<Position<E>> inorder(){
+        List<Position<E>> list = new ArrayList<>();
+
+        fillListByInorder(list, getRoot());
+
+        return list;
+    }
+
+    @Override
+    public Iterable<Position<E>> postorder(){
+        List<Position<E>> list = new ArrayList<>();
+
+        fillListByPostorder(list, getRoot());
+
+        return list;
+    }
+
+    @Override
+    public Iterable<Position<E>> levelorder(){
+        List<Position<E>> list = new ArrayList<>();
+        Queue<Position<E>> queue = new LinkedQueue<>();
+
+        queue.enqueue(getRoot());
+
+        while(!queue.isEmpty()){
+            Position<E> pos = queue.dequeue();
+            list.add(pos);
+
+            Position<E> left = getLeft(pos);
+            Position<E> right = getRight(pos);
+
+            if(left!=null){
+                queue.enqueue(left);
+            }
+
+            if(right!=null){
+                queue.enqueue(right);
+            }
+        }
+
+        return list;
+    }
+
+
+    private void fillListByPreorder(List<Position<E>> list, Position<E> pos){
+        list.add(pos);
+
+        if(isExternal(pos)){
+            return;
+        }
+
+        fillListByPreorder(list, getLeft(pos));
+        fillListByPreorder(list, getRight(pos));
+    }
+
+    private void fillListByInorder(List<Position<E>> list, Position<E> pos){
+        if(isExternal(pos)){
+            list.add(pos);
+            return;
+        }
+
+        fillListByInorder(list, getLeft(pos));
+        list.add(pos);
+        fillListByInorder(list, getRight(pos));
+    }
+
+    private void fillListByPostorder(List<Position<E>> list, Position<E> pos){
+        if(isExternal(pos)){
+            list.add(pos);
+            return;
+        }
+
+        fillListByPostorder(list, getLeft(pos));
+        fillListByPostorder(list, getRight(pos));
+        list.add(pos);
     }
 }
