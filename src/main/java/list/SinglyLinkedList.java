@@ -26,7 +26,7 @@ public class SinglyLinkedList<E> extends AbstractList<E>{
     }
 
     public void add(E data){
-        Node<E> newNode = new Node<>(data, tail.getNext());
+        Node<E> newNode = new Node<>(data, null);
         tail.setNext(newNode);
         tail = newNode;
         size++;
@@ -70,6 +70,11 @@ public class SinglyLinkedList<E> extends AbstractList<E>{
         Node<E> prevNode = findNode(idx-1);
         Node<E> targetNode = prevNode.getNext();
         prevNode.setNext(targetNode.getNext());
+
+        if(targetNode==tail){
+            tail = prevNode;
+        }
+
         size--;
     }
 
