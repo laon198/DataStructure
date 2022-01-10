@@ -50,7 +50,7 @@ abstract public class AbstractPriorityQueue<K,V> implements PriorityQueue<K,V> {
         return comp.compare(lhs.getKey(), rhs.getKey());
     }
 
-    private boolean checkKey(K key){
+    protected boolean checkKey(K key){
         try{
             return 0==comp.compare(key, key);
         }catch(ClassCastException e){

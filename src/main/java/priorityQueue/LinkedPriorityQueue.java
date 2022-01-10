@@ -23,6 +23,8 @@ public class LinkedPriorityQueue<K,V> extends AbstractPriorityQueue<K,V> {
 
     @Override
     public void add(K key, V value) {
+        checkKey(key);
+
         Entry<K,V> entry = new PQEntry<>(key, value);
 
         if(isEmpty()){
