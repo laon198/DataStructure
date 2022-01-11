@@ -9,8 +9,7 @@ import java.util.Comparator;
 public class LinkedPriorityQueue<K,V> extends AbstractPriorityQueue<K,V> {
     private DoublyPositionalList<Entry<K,V>> list = new DoublyPositionalList<>();
 
-    public LinkedPriorityQueue(){
-    }
+    public LinkedPriorityQueue(){}
 
     public LinkedPriorityQueue(Comparator<K> comparator){
         super(comparator);

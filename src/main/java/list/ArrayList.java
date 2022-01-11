@@ -49,6 +49,7 @@ public class ArrayList<E> extends AbstractList<E> {
     public void remove(int idx) {
         validExistingIndex(idx);
         shiftLeft(idx);
+        elements[idx]=null;
         size--;
     }
 
