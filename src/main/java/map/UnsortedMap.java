@@ -6,7 +6,7 @@ import list.DoublyPositionalList;
 
 import java.util.Iterator;
 
-public class UnsortedMap<K,V> implements Iterable<V> {
+public class UnsortedMap<K,V> implements Map<K,V>, Iterable<V> {
     private static class MapEntry<K,V> implements Entry<K,V>{
         private K key;
         private V value;
