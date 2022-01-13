@@ -6,35 +6,7 @@ import list.DoublyPositionalList;
 
 import java.util.Iterator;
 
-public class UnsortedMap<K,V> implements Map<K,V>, Iterable<V> {
-    private static class MapEntry<K,V> implements Entry<K,V>{
-        private K key;
-        private V value;
-
-        public MapEntry(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
-
-        @Override
-        public K getKey() {
-            return key;
-        }
-
-        public void setKey(K key) {
-            this.key = key;
-        }
-
-        @Override
-        public V getValue() {
-            return value;
-        }
-
-        public void setValue(V value) {
-            this.value = value;
-        }
-    }
-
+public class UnsortedMap<K,V> extends AbstractMap<K,V> implements Iterable<V> {
     private final DoublyPositionalList<Entry<K,V>> list;
 
     public UnsortedMap() {
@@ -42,7 +14,6 @@ public class UnsortedMap<K,V> implements Map<K,V>, Iterable<V> {
     }
 
     public int size(){ return list.size();}
-    public boolean isEmpty(){ return list.isEmpty();}
 
     public void put(K key, V value){
         Entry<K,V> newest = new MapEntry<>(key, value);
