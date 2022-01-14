@@ -110,17 +110,32 @@ public class UnsortedMap<K,V> extends AbstractMap<K,V> implements Iterable<V> {
         }
     }
 
+    private class EntryIterable implements Iterable<Entry<K,V>>{
+        @Override
+        public Iterator<Entry<K, V>> iterator() {
+            return list.iterator();
+        }
+    }
+
+    private class KeyIterable implements Iterable<K>{
+        @Override
+        public Iterator<K> iterator() {
+            return new KeyIterator();
+        }
+    }
+
+    @Override
+    public Iterable<Entry<K, V>> entrySet() {
+        return new EntryIterable();
+    }
+
+    @Override
+    public Iterable<K> keySet() {
+        return new KeyIterable();
+    }
+
     @Override
     public Iterator<V> iterator() {
         return new ValueIterator();
     }
-
-    public Iterator<K> keys(){
-        return new KeyIterator();
-    }
-
-    public Iterator<Entry<K,V>> entries(){
-        return list.iterator();
-    }
-
 }
