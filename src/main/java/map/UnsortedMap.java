@@ -16,8 +16,14 @@ public class UnsortedMap<K,V> extends AbstractMap<K,V> implements Iterable<V> {
     public int size(){ return list.size();}
 
     public void put(K key, V value){
-        Entry<K,V> newest = new MapEntry<>(key, value);
-        list.add(newest);
+        Position<Entry<K,V>> pos = findPosByKey(key);
+
+        if(pos==null){
+            Entry<K,V> newest = new MapEntry<>(key, value);
+            list.add(newest);
+        }else{
+            ((MapEntry<K,V>)pos.getData()).setValue(value);
+        }
     }
 
     public V get(K key) throws IllegalArgumentException{
@@ -53,6 +59,10 @@ public class UnsortedMap<K,V> extends AbstractMap<K,V> implements Iterable<V> {
 
     private Position<Entry<K,V>> findPosByKey(K key){
         Position<Entry<K,V>> targetPos = null;
+
+        if(list.isEmpty()){
+            return null;
+        }
 
         for(Position<Entry<K,V>> pos : list.positions()){
             if(key.equals(pos.getData().getKey())){
