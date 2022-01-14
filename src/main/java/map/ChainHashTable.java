@@ -1,33 +1,27 @@
 package map;
 
-public class ChainHashTable<K,V> extends AbstractMap<K,V>{
-    private static final int defaultCapacity = 16;
+public class ChainHashTable<K,V> extends AbstractHashTable<K,V>{
     private Map<K,V>[] table;
-    private int size;
 
     public ChainHashTable(){
-        this(defaultCapacity);
+        super();
     }
 
     public ChainHashTable(int capacity){
-        table = new Map[capacity];
-        size = 0;
-
-        for(int i=0; i<table.length; i++){
-            table[i] = new UnsortedMap<>();
-        }
+        super(capacity);
     }
 
-    @Override
-    public int size() {
-        return size;
+    public ChainHashTable(int capacity, int prime){
+        super(capacity, prime);
     }
 
     @Override
     public void put(K key, V value) {
         int hashValue = hashing(key);
-        table[hashValue].put(key,value);
-        size++;
+        Map<K,V> bucket = table[hashValue];
+        int oldSize = bucket.size();
+        bucket.put(key,value);
+        size += (bucket.size()-oldSize);
     }
 
     @Override
@@ -49,8 +43,13 @@ public class ChainHashTable<K,V> extends AbstractMap<K,V>{
         size--;
     }
 
-    private int hashing(K key){
-        return key.hashCode()%table.length;
+    @Override
+    protected void createTable() {
+        table = new Map[capacity];
+        for(int i=0; i<capacity; i++){
+            table[i] = new UnsortedMap<>();
+        }
     }
+
 
 }
