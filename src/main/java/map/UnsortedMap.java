@@ -6,7 +6,7 @@ import list.DoublyPositionalList;
 
 import java.util.Iterator;
 
-public class UnsortedMap<K,V> extends AbstractMap<K,V> implements Iterable<V> {
+public class UnsortedMap<K,V> extends AbstractMap<K,V>{
     private final DoublyPositionalList<Entry<K,V>> list;
 
     public UnsortedMap() {

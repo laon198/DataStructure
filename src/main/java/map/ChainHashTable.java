@@ -1,5 +1,7 @@
 package map;
 
+import common.Entry;
+
 public class ChainHashTable<K,V> extends AbstractHashTable<K,V>{
     private Map<K,V>[] table;
 
@@ -25,22 +27,32 @@ public class ChainHashTable<K,V> extends AbstractHashTable<K,V>{
     }
 
     @Override
-    public V get(K key) {
+    public V get(K key) throws IllegalArgumentException {
         int hashValue = hashing(key);
         return table[hashValue].get(key);
     }
 
     @Override
-    public void set(K key, V value) {
+    public void set(K key, V value) throws IllegalArgumentException {
         int hashValue = hashing(key);
         table[hashValue].set(key, value);
     }
 
     @Override
-    public void remove(K key) {
+    public void remove(K key) throws IllegalArgumentException {
         int hashValue = hashing(key);
         table[hashValue].remove(key);
         size--;
+    }
+
+    @Override
+    public Iterable<Entry<K, V>> entrySet() {
+        return null;
+    }
+
+    @Override
+    public Iterable<K> keySet() {
+        return null;
     }
 
     @Override
@@ -50,6 +62,4 @@ public class ChainHashTable<K,V> extends AbstractHashTable<K,V>{
             table[i] = new UnsortedMap<>();
         }
     }
-
-
 }
