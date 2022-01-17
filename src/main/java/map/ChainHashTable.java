@@ -2,6 +2,9 @@ package map;
 
 import common.Entry;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 public class ChainHashTable<K,V> extends AbstractHashTable<K,V>{
     private Map<K,V>[] table;
 
@@ -46,20 +49,112 @@ public class ChainHashTable<K,V> extends AbstractHashTable<K,V>{
     }
 
     @Override
-    public Iterable<Entry<K, V>> entrySet() {
-        return null;
-    }
-
-    @Override
-    public Iterable<K> keySet() {
-        return null;
-    }
-
-    @Override
     protected void createTable() {
         table = new Map[capacity];
         for(int i=0; i<capacity; i++){
             table[i] = new UnsortedMap<>();
         }
+    }
+
+    private class EntryIterable implements Iterable<Entry<K,V>>{
+        @Override
+        public Iterator<Entry<K, V>> iterator() {
+            return new EntryIterator();
+        }
+    }
+
+    private class EntryIterator implements Iterator<Entry<K,V>>{
+        private int iterSize;
+        private int tableIndex;
+        private Iterator<Entry<K,V>> curIter;
+
+        EntryIterator(){
+            tableIndex = -1;
+            iterSize = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            if(iterSize>=size()){
+                return false;
+            }
+
+            return true;
+        }
+
+        @Override
+        public Entry<K, V> next() {
+            if(!hasNext()){
+                throw new NoSuchElementException("no next element");
+            }
+
+            if(curIter==null || !curIter.hasNext()){
+                while(table[++tableIndex].isEmpty()){
+                }
+
+                curIter = table[tableIndex].entrySet().iterator();
+            }
+
+            iterSize++;
+            return curIter.next();
+        }
+    }
+
+    private class KeyIterable implements Iterable<K>{
+        @Override
+        public Iterator<K> iterator() {
+            return new KeyIterator();
+        }
+    }
+
+    private class KeyIterator implements Iterator<K>{
+        private Iterator<Entry<K,V>> entryIter;
+
+        KeyIterator(){
+            entryIter = new EntryIterator();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return entryIter.hasNext();
+        }
+
+        @Override
+        public K next() {
+            return entryIter.next().getKey();
+        }
+    }
+
+    private class ValueIterator implements Iterator<V>{
+        private Iterator<Entry<K,V>> entryIter;
+
+        ValueIterator(){
+            entryIter = new EntryIterator();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return entryIter.hasNext();
+        }
+
+        @Override
+        public V next() {
+            return entryIter.next().getValue();
+        }
+    }
+
+    @Override
+    public Iterable<Entry<K, V>> entrySet() {
+        return new EntryIterable();
+    }
+
+    @Override
+    public Iterable<K> keySet() {
+        return new KeyIterable();
+    }
+
+    @Override
+    public Iterator<V> iterator() {
+        return new ValueIterator();
     }
 }
