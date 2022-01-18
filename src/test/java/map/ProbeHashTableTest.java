@@ -5,16 +5,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Iterator;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-class ChainHashTableTest {
+class ProbeHashTableTest {
     private Map<Integer, Character> map;
 
     @BeforeEach
     void setUp() {
-        map = new ChainHashTable<>();
+        map = new ProbeHashTable<>();
     }
 
     @Test
@@ -28,9 +26,20 @@ class ChainHashTableTest {
     }
 
     @Test
+    @DisplayName("중복 key put 테스트")
+    public void duplicatedKeyPutTest(){
+        int putSize = 10;
+
+        fillMap(putSize);
+        map.put(4, 'a');
+        assertEquals('a', map.get(4));
+        assertEquals(putSize, map.size());
+    }
+
+    @Test
     @DisplayName("get 테스트")
     public void getTest(){
-        int putSize = 20;
+        int putSize = 10;
         fillMap(putSize);
 
         for(int i=0; i<putSize; i++){
@@ -87,5 +96,4 @@ class ChainHashTableTest {
             map.put(i, (char)('A'+i));
         }
     }
-
 }
