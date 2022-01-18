@@ -29,71 +29,48 @@ public class ProbeHashTable<K,V> extends AbstractHashTable<K,V>{
 
     @Override
     public void put(K key, V value) {
-        if(size>=capacity){
+        if(size>capacity/2){
             resize();
         }
 
         int index = findIndex(key);
 
-        if(table[index]!=null){
+        if(index>=0){
             table[index].setValue(value);
             return;
         }
 
-        table[index] = new MapEntry<>(key, value);
+        table[-(index+1)] = new MapEntry<>(key, value);
         size++;
-    }
-
-    private int findIndex(K key) throws IllegalStateException{
-        int index = hashing(key);
-
-        int i=0;
-        while(table[index]!=null){
-            if(i>capacity){
-                throw new IllegalStateException("map is full!");
-            }
-
-            if(table[index]!=DEFUNCT && table[index].getKey().equals(key)){
-                return index;
-            }
-
-            i++;
-            index = (index+i)%capacity;
-        }
-
-        return index;
     }
 
     @Override
     public V get(K key) throws IllegalArgumentException {
         int index = findIndex(key);
-        MapEntry<K,V> entry = table[index];
 
-        if(entry==null){
+        if(index<0){
             throw new IllegalArgumentException("No matching key");
         }
 
-        return entry.getValue();
+        return table[index].getValue();
     }
 
     @Override
     public void set(K key, V value) {
         int index = findIndex(key);
-        MapEntry<K,V> entry = table[index];
 
-        if(entry==null){
+        if(index<0){
             throw new IllegalArgumentException("No matching key");
         }
 
-        entry.setValue(value);
+        table[index].setValue(value);
     }
 
     @Override
     public void remove(K key) {
         int index = findIndex(key);
-        MapEntry<K,V> entry = table[index];
 
-        if(entry==null){
+        if(index<0){
             throw new IllegalArgumentException("No matching key");
         }
 
@@ -125,4 +102,31 @@ public class ProbeHashTable<K,V> extends AbstractHashTable<K,V>{
 
         return list;
     }
+
+    private boolean isAvailable(int index){
+        return table[index]==DEFUNCT || table[index]==null;
+    }
+
+    private int findIndex(K key) throws IllegalStateException{
+        int index = hashing(key);
+        int beginIndex = index;
+        int avail = -1;
+
+        do{
+            if(isAvailable(index)){
+                if(avail==-1){
+                    avail = index;
+                }
+                if(table[index]==null){
+                    break;
+                }
+            }else if(table[index].getKey().equals(key)){
+                return index;
+            }
+            index = (index+1)%capacity;
+        }while(index!=beginIndex);
+
+        return -(avail+1);
+    }
+
 }
