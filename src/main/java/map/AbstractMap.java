@@ -32,5 +32,4 @@ abstract public class AbstractMap<K,V> implements Map<K,V> {
     }
 
     public boolean isEmpty(){ return size()==0;}
-
 }

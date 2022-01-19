@@ -1,4 +1,4 @@
-package priorityQueue;
+package common;
 
 import java.util.Comparator;
 

@@ -1,5 +1,6 @@
 package priorityQueue;
 
+import common.DefaultComparator;
 import common.Entry;
 
 import java.util.Comparator;
