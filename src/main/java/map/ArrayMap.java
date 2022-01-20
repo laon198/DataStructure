@@ -87,15 +87,11 @@ public class ArrayMap<K,V> extends AbstractMap<K,V> {
     }
 
     private int findIndex(K key){
-        if(isEmpty()){
-            return -1;
-        }
-
         int high = size()-1;
         int low = 0;
         int mid = (high+low)/2;
 
-        while(high!=low){
+        while(high>=low){
             K midKey = table.get(mid).getKey();
             if(comp.compare(key, midKey)==0){
                 return mid;
@@ -108,15 +104,6 @@ public class ArrayMap<K,V> extends AbstractMap<K,V> {
             mid = (high+low)/2;
         }
 
-
-        K midKey = table.get(mid).getKey();
-
-        if(comp.compare(key, midKey)==0){
-            return mid;
-        }else if(comp.compare(key, midKey)>0){
-            return -(mid+1 +1);
-        }else{
-            return -(mid-1 +1);
-        }
+        return -(low+1);
     }
 }
