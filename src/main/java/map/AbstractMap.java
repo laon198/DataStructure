@@ -7,7 +7,7 @@ abstract public class AbstractMap<K,V> implements Map<K,V> {
         private K key;
         private V value;
 
-        protected MapEntry(K key, V value) {
+        public MapEntry(K key, V value) {
             this.key = key;
             this.value = value;
         }

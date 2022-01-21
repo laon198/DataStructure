@@ -137,11 +137,6 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
             throw new IllegalStateException("this node has two children");
         }
 
-        if(isRoot(pos)){
-            root = node;
-            return;
-        }
-
         Node<E> child = null;
 
         if(node.getLeft()!=null){
@@ -150,14 +145,20 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
             child = node.getRight();
         }
 
-        if(parent.getLeft()==node){
-            parent.setLeft(child);
-        }else if(parent.getRight()==node){
-            parent.setRight(child);
+        if(parent!=null){
+            if(parent.getLeft()==node){
+                parent.setLeft(child);
+            }else if(parent.getRight()==node){
+                parent.setRight(child);
+            }
         }
 
         if(child!=null){
             child.setParent(parent);
+
+            if(node==root){
+                root = child;
+            }
         }
 
         size--;

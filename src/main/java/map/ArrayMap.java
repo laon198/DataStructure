@@ -6,28 +6,25 @@ import list.ArrayList;
 
 import java.util.Comparator;
 
-public class ArrayMap<K,V> extends AbstractMap<K,V> {
+public class ArrayMap<K,V> extends AbstractSortedMap<K,V> {
     private ArrayList<Entry<K,V>> table;
-    private Comparator<K> comp;
 
     public ArrayMap(){
         table = new ArrayList<>();
-        comp = new DefaultComparator<>();
     }
 
     public ArrayMap(Comparator<K> comp){
+        super(comp);
         table = new ArrayList<>();
-        this.comp = comp;
     }
 
     public ArrayMap(int capacity){
         table = new ArrayList<>(capacity);
-        comp = new DefaultComparator<>();
     }
 
     public ArrayMap(int capacity, Comparator<K> comp){
+        super(comp);
         table = new ArrayList<>(capacity);
-        this.comp = comp;
     }
 
     @Override
