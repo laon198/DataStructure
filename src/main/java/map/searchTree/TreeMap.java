@@ -2,11 +2,9 @@ package map.searchTree;
 
 import common.Entry;
 import common.Position;
-import javafx.geometry.Pos;
 import map.AbstractSortedMap;
 import tree.LinkedBinaryTree;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 
