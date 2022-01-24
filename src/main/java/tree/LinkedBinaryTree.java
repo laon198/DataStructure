@@ -3,7 +3,7 @@ package tree;
 import common.Position;
 
 public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
-    private static class Node<E> implements Position<E>{
+    protected static class Node<E> implements Position<E>{
         private E data;
         private Node<E> parent;
         private Node<E> left;
