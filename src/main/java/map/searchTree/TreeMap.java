@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class TreeMap<K,V> extends AbstractSortedMap<K,V> {
-    private LinkedBinaryTree<Entry<K,V>> tree = new LinkedBinaryTree<>();
+    private BalanceableTree<K,V> tree = new BalanceableTree<>();
 
     public TreeMap(){
         super();

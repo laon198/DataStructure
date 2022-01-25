@@ -5,6 +5,20 @@ import common.Position;
 import tree.LinkedBinaryTree;
 
 public class BalanceableTree<K,V> extends LinkedBinaryTree<Entry<K,V>> {
+    public void restruct(Position<Entry<K,V>> childPos){
+        Node<Entry<K,V>> child = (Node<Entry<K,V>>) childPos;
+        Node<Entry<K,V>> target = child.getParent();
+        Node<Entry<K,V>> parent = target.getParent();
+
+        if((parent.getLeft()==target) == (target.getLeft()==child)){
+            rotate(target);
+        }else{
+            rotate(childPos);
+            rotate(childPos);
+        }
+
+    }
+
     public void rotate(Position<Entry<K,V>> childPos){
         if(childPos==null || childPos==getRoot()){ //자기가 루트일때, 부모가 루트일때 생각 필요
             return;
