@@ -5,49 +5,42 @@ import common.Position;
 import tree.LinkedBinaryTree;
 
 public class BalanceableTree<K,V> extends LinkedBinaryTree<Entry<K,V>> {
-    public void rotateLeft(Position<Entry<K,V>> pos){
-        Node<Entry<K,V>> target = (Node<Entry<K,V>>) pos;
-        Node<Entry<K,V>> parent = target.getParent();
-        Node<Entry<K,V>> right = target.getRight();
-        Node<Entry<K,V>> rightLeft = right.getLeft();
-
-        if(right==null){
+    public void rotate(Position<Entry<K,V>> childPos){
+        if(childPos==null || childPos==getRoot()){ //자기가 루트일때, 부모가 루트일때 생각 필요
             return;
         }
 
-        target.setParent(right);
-        target.setRight(rightLeft);
-        rightLeft.setParent(target);
-        right.setLeft(target);
-        right.setParent(parent);
+        Node<Entry<K,V>> child = (Node<Entry<K,V>>) childPos;
+        Node<Entry<K,V>> target = child.getParent();
+        Node<Entry<K,V>> parent = target.getParent();
 
-        if(parent.getRight()==target){
-            parent.setRight(right);
-        }else if(parent.getLeft()==target){
-            parent.setLeft(right);
+        chain(parent, child, parent.getLeft()==target);
+
+        if(target.getLeft()==child){
+            chain(target, child.getRight(), true);
+            chain(child, target, false);
+        }else{
+            chain(target, child.getLeft(), false);
+            chain(child, target, true);
         }
     }
 
-    public void rotateRight(Position<Entry<K,V>> pos){
-        Node<Entry<K,V>> target = (Node<Entry<K,V>>) pos;
-        Node<Entry<K,V>> parent = target.getParent();
-        Node<Entry<K,V>> left = target.getLeft();
-        Node<Entry<K,V>> leftRight = left.getRight();
+    private void chain(
+            Node<Entry<K,V>> parent,
+            Node<Entry<K,V>> child,
+            boolean isLeftChild
+    ){
 
-        if(left==null){
-            return;
+        if(parent!=null){
+            if(isLeftChild){
+                parent.setLeft(child);
+            }else{
+                parent.setRight(child);
+            }
         }
 
-        target.setParent(left);
-        target.setLeft(leftRight);
-        leftRight.setParent(target);
-        left.setRight(target);
-        left.setParent(parent);
-
-        if(parent.getRight()==target){
-            parent.setRight(left);
-        }else if(parent.getLeft()==target){
-            parent.setLeft(left);
+        if(child!=null){
+            child.setParent(parent);
         }
     }
 
