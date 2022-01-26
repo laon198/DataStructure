@@ -7,7 +7,7 @@ public interface Tree<E> {
     boolean isEmpty();
     Position<E> getRoot();
     boolean isRoot(Position<E> pos);
-    int getHeight();
+    int getHeight(Position<E> pos);
     int getDepth(Position<E> pos);
     boolean isExternal(Position<E> pos);
     boolean isInternal(Position<E> pos);

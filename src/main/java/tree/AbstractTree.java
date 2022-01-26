@@ -20,12 +20,7 @@ abstract public class AbstractTree<E> implements Tree<E> {
         return pos==getRoot();
     }
 
-    @Override
-    public int getHeight(){
-        return getHeight(getRoot());
-    }
-
-    private int getHeight(Position<E> pos){
+    public int getHeight(Position<E> pos){
         int height = 0;
 
         for(Position<E> child : getChildren(getRoot())){
