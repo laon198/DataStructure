@@ -3,13 +3,12 @@ package map.searchTree;
 import common.Entry;
 import common.Position;
 import map.AbstractSortedMap;
-import tree.LinkedBinaryTree;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class TreeMap<K,V> extends AbstractSortedMap<K,V> {
-    private BalanceableTree<K,V> tree = new BalanceableTree<>();
+    protected BalanceableTree<K,V> tree = new BalanceableTree<>();
 
     public TreeMap(){
         super();
@@ -18,6 +17,9 @@ public class TreeMap<K,V> extends AbstractSortedMap<K,V> {
     public TreeMap(Comparator<K> comp){
         super(comp);
     }
+
+    protected void balanceAfterPut(Position<Entry<K,V>> pos){}
+    protected void balanceAfterRemove(Position<Entry<K,V>> pos){}
 
     @Override
     public int size() {
@@ -41,10 +43,14 @@ public class TreeMap<K,V> extends AbstractSortedMap<K,V> {
 
             if(compValue>0){
                 tree.addRight(pos, newest);
+                pos = tree.getRight(pos);
             }else if(compValue<0){
                 tree.addLeft(pos, newest);
+                pos = tree.getLeft(pos);
             }
         }
+
+        balanceAfterPut(tree.getParent(pos));
     }
 
     @Override
@@ -85,18 +91,23 @@ public class TreeMap<K,V> extends AbstractSortedMap<K,V> {
         }
 
         Position<Entry<K,V>> pos = findPos(key);
+        Position<Entry<K,V>> parent;
 
         if (key.equals(pos.getData().getKey())) {
             if(tree.getChildrenNum(pos)==2){
                 Position<Entry<K,V>> target = findMax(pos);
+                parent = tree.getParent(target);
                 tree.set(pos, target.getData());
                 tree.remove(target);
             }else{
+                parent = tree.getParent(pos);
                 tree.remove(pos);
             }
         }else{
             throw new IllegalArgumentException("No matching key");
         }
+
+        balanceAfterRemove(parent);
     }
 
     private Position<Entry<K,V>> findMax(Position<Entry<K,V>> pos){

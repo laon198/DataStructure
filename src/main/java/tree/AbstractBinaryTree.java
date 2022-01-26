@@ -11,6 +11,10 @@ abstract public class AbstractBinaryTree<E> extends AbstractTree<E> implements B
     public Iterable<Position<E>> getChildren(Position<E> pos) {
         List<Position<E>> list = new ArrayList<>();
 
+        if(pos==null){
+            return list;
+        }
+
         if(getLeft(pos)!=null){
             list.add(getLeft(pos));
         }

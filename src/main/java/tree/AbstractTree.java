@@ -21,9 +21,13 @@ abstract public class AbstractTree<E> implements Tree<E> {
     }
 
     public int getHeight(Position<E> pos){
-        int height = 0;
+        if(pos==null){
+            return 0;
+        }
 
-        for(Position<E> child : getChildren(getRoot())){
+        int height = 1;
+
+        for(Position<E> child : getChildren(pos)){
             height = Math.max(height, 1+getHeight(child));
         }
 
