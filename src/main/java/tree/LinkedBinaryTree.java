@@ -115,10 +115,6 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
     @Override
     public Position<E> getParent(Position<E> pos) throws IllegalArgumentException {
-        if(isRoot(pos)){
-            throw new IllegalArgumentException("position is root");
-        }
-
         Node<E> node = (Node<E>)pos;
         return node.getParent();
     }
