@@ -10,7 +10,7 @@ public class BalanceableTree<K,V> extends LinkedBinaryTree<Entry<K,V>> {
         Node<Entry<K,V>> target = child.getParent();
         Node<Entry<K,V>> parent = target.getParent();
 
-        if((parent.getLeft()==target) == (target.getLeft()==child)){
+        if(target==getRoot() || ((parent.getLeft()==target) == (target.getLeft()==child))){
             rotate(target);
         }else{
             rotate(childPos);
@@ -28,8 +28,6 @@ public class BalanceableTree<K,V> extends LinkedBinaryTree<Entry<K,V>> {
         Node<Entry<K,V>> target = child.getParent();
         Node<Entry<K,V>> parent = target.getParent();
 
-        chain(parent, child, parent.getLeft()==target);
-
         if(target.getLeft()==child){
             chain(target, child.getRight(), true);
             chain(child, target, false);
@@ -37,6 +35,14 @@ public class BalanceableTree<K,V> extends LinkedBinaryTree<Entry<K,V>> {
             chain(target, child.getLeft(), false);
             chain(child, target, true);
         }
+
+        if(target==getRoot()){
+            root = child;
+            child.setParent(null);
+        }else{
+            chain(parent, child, parent.getLeft()==target);
+        }
+
     }
 
     private void chain(

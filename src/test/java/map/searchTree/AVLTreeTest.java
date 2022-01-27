@@ -18,6 +18,12 @@ class AVLTreeTest {
         fillMap();
     }
 
+    @Test
+    public void AVLRemoveTest1(){
+        fillMap();
+        map.remove(60);
+    }
+
     private void fillMap(){
         map.put(30, "");
         map.put(40, "");

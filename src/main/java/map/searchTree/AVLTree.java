@@ -28,12 +28,21 @@ public class AVLTree<K,V> extends TreeMap<K,V> {
             int rightHeight = tree.getHeight(right);
 
             if(Math.abs(leftHeight-rightHeight)>1){
-                if(leftHeight>rightHeight){
-                    tree.restruct(left);
-                }else{
-                    tree.restruct(right);
-                }
+                tree.restruct(getTallerChild(getTallerChild(curPos)));
             }
         }
-  }
+    }
+
+    private Position<Entry<K,V>> getTallerChild(Position<Entry<K,V>> pos){
+        Position<Entry<K,V>> left = tree.getLeft(pos);
+        Position<Entry<K,V>> right = tree.getRight(pos);
+        int leftHeight = tree.getHeight(left);
+        int rightHeight = tree.getHeight(right);
+
+        if(leftHeight>rightHeight){
+            return left;
+        }else{
+            return right;
+        }
+    }
 }

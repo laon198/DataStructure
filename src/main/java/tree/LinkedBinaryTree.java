@@ -50,7 +50,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
         }
     }
 
-    private Node<E> root;
+    protected Node<E> root;
 
     public LinkedBinaryTree(){}
 
