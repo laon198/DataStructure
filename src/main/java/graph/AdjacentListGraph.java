@@ -137,47 +137,25 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
 
     @Override
     public void removeVertex(Vertex<V> vertex) {
+        InnerVertex<V,E> innerVertex = validateVertex(vertex);
 
+        for(Edge<E> edge : innerVertex.getEdges()){
+            for(Vertex<V> adjacent : ((InnerEdge<V,E>)edge).getEndpoints()){
+                if(adjacent!=innerVertex){
+                    ((InnerVertex<V,E>)adjacent).removeEdge(edge);
+                }
+            }
+        }
+
+        vertices.set(sentinelVertx, innerVertex.getIndex());
     }
 
     @Override
     public void removeEdge(Edge<E> edge) {
-
+        for(Vertex<V> endpoint : ((InnerEdge<V,E>)edge).getEndpoints()){
+            ((InnerVertex<V,E>)endpoint).removeEdge(edge);
+        }
     }
-
-//    @Override
-//    public void removeVertex(Vertex<V> vertex) {
-//        InnerVertex<V,E> innerVertex = validateVertex(vertex);
-//
-//        for(Edge<E> edge : innerVertex.getEdges()){
-//            InnerVertex<V,E> adjacentVertex =
-//                    (InnerVertex<V, E>) vertices.get(((InnerEdge<V,E>)edge).getEndpoint());
-//            adjacentVertex.removeEdge(edge);
-//        }
-//
-//        vertices.set(sentinelVertx, innerVertex.getIndex());
-//    }
-//
-//    @Override
-//    public void removeEdge(Edge<E> edge) {
-//        for(Vertex<V> vertex : vertices){
-//            InnerVertex<V,E> innerVertex = validateVertex(vertex);
-//            for(Edge<E> existEdge : innerVertex.getEdges()){
-//                if(existEdge==edge){
-//                    InnerVertex<V,E> endVertex =
-//                            (InnerVertex<V, E>) vertices.get(((InnerEdge<E>)existEdge).getEndpoint());
-//
-//                    for(Edge<E> endVertexEdge : endVertex.getEdges()){
-//                        if(((InnerEdge<E>)endVertexEdge).getEndpoint()==innerVertex.getIndex()){
-//                            endVertex.removeEdge(endVertexEdge);
-//                            innerVertex.removeEdge(edge);
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     private InnerVertex<V,E> validateVertex(Vertex<V> vertex){
         InnerVertex<V,E> innerVertex = null;
