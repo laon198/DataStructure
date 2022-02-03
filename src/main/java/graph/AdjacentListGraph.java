@@ -24,6 +24,14 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
             edges.add(edge);
         }
 
+        public void removeEdge(Edge<E> edge){
+            edges.remove(edge);
+        }
+
+        public Iterable<Edge<E>> getEdges(){
+            return edges;
+        }
+
         public V getElement() {
             return element;
         }
@@ -33,21 +41,19 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
         }
     }
 
-    private static class InnerEdge<E> implements Edge<E>{
+    private static class InnerEdge<V,E> implements Edge<E>{
         private E weight;
-        private int endpoint;
+        private final ArrayList<Vertex<V>> endpoints;
 
-        public InnerEdge(E weight, int endpoint) {
+        public InnerEdge(E weight, Vertex<V> lhs, Vertex<V> rhs) {
             this.weight = weight;
-            this.endpoint = endpoint;
+            endpoints = new ArrayList<>(2);
+            endpoints.add(lhs);
+            endpoints.add(rhs);
         }
 
-        public int getEndpoint() {
-            return endpoint;
-        }
-
-        public void setEndpoint(int endpoint) {
-            this.endpoint = endpoint;
+        public Iterable<Vertex<V>> getEndpoints() {
+            return endpoints;
         }
 
         @Override
@@ -61,6 +67,9 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
     }
 
     private ArrayList<Vertex<V>> vertices;
+    private final Vertex<V> sentinelVertx = new InnerVertex<V,E>(null, -1);
+
+    public AdjacentListGraph(){}
 
     @Override
     public Edge<E> addVertex(Vertex<V> v, V vertexVal) {
@@ -69,30 +78,61 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
 
     @Override
     public Edge<E> addVertex(Vertex<V> v, V vertexVal, E edgeVal) {
+        InnerVertex<V,E> existVertex = validateVertex(v);
         InnerVertex<V,E> newVertex = new InnerVertex<>(vertexVal, vertices.size());
-        Edge<E> newEdge = new InnerEdge<E>(edgeVal, newVertex.getIndex());
-        ((InnerVertex<V,E>)v).addEdge(newEdge);
+        Edge<E> newEdge = new InnerEdge<V,E>(edgeVal, existVertex, newVertex);
+        vertices.add(newVertex);
+        existVertex.addEdge(newEdge);
+        newVertex.addEdge((newEdge));
         return newEdge;
     }
 
     @Override
     public Edge<E> getEdge(Vertex<V> lhs, Vertex<V> rhs) {
+        InnerVertex<V,E> lhsVertex = validateVertex(lhs);
+
+        for(Edge<E> edge : lhsVertex.getEdges()){
+            for(Vertex<V> vert : ((InnerEdge<V,E>)edge).getEndpoints()){
+                if(vert==rhs){
+                    return edge;
+                }
+            }
+        }
+
         return null;
     }
 
     @Override
     public Vertex<V>[] getVertices(Edge<E> edge) {
-        return new Vertex[0];
+        Vertex<V>[] result = new Vertex[2];
+
+        for(Vertex<V> vertex : vertices){
+            InnerVertex<V,E> innerVertex = validateVertex(vertex);
+            for(Edge<E> existEdge : innerVertex.getEdges()){
+                if(existEdge==edge){
+                    int i = 0;
+                    for(Vertex<V> resVert : ((InnerEdge<V,E>)existEdge).getEndpoints()){
+                        result[i++] = resVert;
+                    }
+
+                    return result;
+                }
+            }
+        }
+
+        return result;
     }
 
     @Override
-    public void setVertex(Vertex<V> vertex) {
-
+    public void setVertex(Vertex<V> vertex, V vertexVal) {
+        InnerVertex<V,E> innerVertex = validateVertex(vertex);
+        innerVertex.setElement(vertexVal);
     }
 
     @Override
-    public void setEdge(Edge<E> edge) {
-
+    public void setEdge(Edge<E> edge, E edgeVal) {
+        InnerEdge<V,E> innerEdge = validateEdge(edge);
+        innerEdge.setWeight(edgeVal);
     }
 
     @Override
@@ -103,5 +143,63 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
     @Override
     public void removeEdge(Edge<E> edge) {
 
+    }
+
+//    @Override
+//    public void removeVertex(Vertex<V> vertex) {
+//        InnerVertex<V,E> innerVertex = validateVertex(vertex);
+//
+//        for(Edge<E> edge : innerVertex.getEdges()){
+//            InnerVertex<V,E> adjacentVertex =
+//                    (InnerVertex<V, E>) vertices.get(((InnerEdge<V,E>)edge).getEndpoint());
+//            adjacentVertex.removeEdge(edge);
+//        }
+//
+//        vertices.set(sentinelVertx, innerVertex.getIndex());
+//    }
+//
+//    @Override
+//    public void removeEdge(Edge<E> edge) {
+//        for(Vertex<V> vertex : vertices){
+//            InnerVertex<V,E> innerVertex = validateVertex(vertex);
+//            for(Edge<E> existEdge : innerVertex.getEdges()){
+//                if(existEdge==edge){
+//                    InnerVertex<V,E> endVertex =
+//                            (InnerVertex<V, E>) vertices.get(((InnerEdge<E>)existEdge).getEndpoint());
+//
+//                    for(Edge<E> endVertexEdge : endVertex.getEdges()){
+//                        if(((InnerEdge<E>)endVertexEdge).getEndpoint()==innerVertex.getIndex()){
+//                            endVertex.removeEdge(endVertexEdge);
+//                            innerVertex.removeEdge(edge);
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+    private InnerVertex<V,E> validateVertex(Vertex<V> vertex){
+        InnerVertex<V,E> innerVertex = null;
+
+        try{
+            innerVertex = (InnerVertex<V, E>) vertex;
+        }catch(ClassCastException e){
+            throw new IllegalArgumentException("no match vertex type");
+        }
+
+        return innerVertex;
+    }
+
+    private InnerEdge<V,E> validateEdge(Edge<E> edge){
+        InnerEdge<V,E> innerEdge = null;
+
+        try{
+            innerEdge = (InnerEdge<V,E>) edge;
+        }catch(ClassCastException e){
+            throw new IllegalArgumentException("no match edge type");
+        }
+
+        return innerEdge;
     }
 }
