@@ -40,28 +40,29 @@ public class DoublyPositionalList<E> implements Iterable<E> {
     public int size(){return size;}
     public boolean isEmpty(){return size==0;}
 
-    public void add(E data){
-        addBetween(tail.getPrev(), tail, data);
+    public Position<E> add(E data){
+        return addBetween(tail.getPrev(), tail, data);
     }
 
-    public void addNext(Position<E> position, E data){
+    public Position<E> addNext(Position<E> position, E data){
         Node<E> prev = (Node<E>) position;
         Node<E> next = prev.getNext();
 
-        addBetween(prev, next, data);
+        return addBetween(prev, next, data);
     }
 
-    public void addPrev(Position<E> position, E data){
+    public Position<E> addPrev(Position<E> position, E data){
         Node<E> next = (Node<E>) position;
         Node<E> prev = next.getPrev();
 
-        addBetween(prev, next, data);
+        return addBetween(prev, next, data);
     }
 
-    private void addBetween(Node<E> prev, Node<E> next, E data){
+    private Position<E> addBetween(Node<E> prev, Node<E> next, E data){
         Node<E> newNode = new Node<E>(data,null, null);
         chain(prev, next, newNode);
         size++;
+        return newNode;
     }
 
     public Position<E> getFirst() throws NoSuchElementException{
