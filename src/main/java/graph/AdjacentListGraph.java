@@ -1,6 +1,8 @@
 package graph;
 
+import common.Position;
 import list.ArrayList;
+import list.DoublyPositionalList;
 
 import java.util.LinkedList;
 
@@ -8,28 +10,29 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
     private static class InnerVertex<V, E> implements Vertex<V>{
         private V element;
         private final int index;
-        private final LinkedList<Edge<E>> edges;
+        private final LinkedList<Edge<E>> outgoing, incoming;
 
-        public InnerVertex(V element, int index) {
+        public InnerVertex(V element, int index, boolean isDirected) {
             this.element = element;
             this.index = index;
-            edges = new LinkedList<>();
+            outgoing = new LinkedList<>();
+            if(isDirected){
+                incoming = new LinkedList<>();
+            }else{
+                incoming = outgoing;
+            }
         }
 
         public int getIndex() {
             return index;
         }
 
-        public void addEdge(Edge<E> edge){
-            edges.add(edge);
+        public LinkedList<Edge<E>> getOutgoing(){
+            return outgoing;
         }
 
-        public void removeEdge(Edge<E> edge){
-            edges.remove(edge);
-        }
-
-        public Iterable<Edge<E>> getEdges(){
-            return edges;
+        public LinkedList<Edge<E>> getIncoming(){
+            return incoming;
         }
 
         public V getElement() {
@@ -52,7 +55,7 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
             endpoints.add(rhs);
         }
 
-        public Iterable<Vertex<V>> getEndpoints() {
+        public ArrayList<Vertex<V>> getEndpoints() {
             return endpoints;
         }
 
@@ -66,24 +69,45 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
         }
     }
 
-    private ArrayList<Vertex<V>> vertices;
-    private final Vertex<V> sentinelVertx = new InnerVertex<V,E>(null, -1);
+    private final boolean isDirected;
+    private final ArrayList<Vertex<V>> vertices;
+    private final Vertex<V> sentinelVertx;
 
-    public AdjacentListGraph(){}
+    public AdjacentListGraph(){
+        this(false);
+    }
 
-    @Override
-    public Edge<E> addVertex(Vertex<V> v, V vertexVal) {
-        return addVertex(v, vertexVal, null);
+    public AdjacentListGraph(boolean isDirected){
+        this.isDirected = isDirected;
+        vertices = new ArrayList<>();
+        sentinelVertx = new InnerVertex<>(null, -1, isDirected);
     }
 
     @Override
-    public Edge<E> addVertex(Vertex<V> v, V vertexVal, E edgeVal) {
-        InnerVertex<V,E> existVertex = validateVertex(v);
-        InnerVertex<V,E> newVertex = new InnerVertex<>(vertexVal, vertices.size());
-        Edge<E> newEdge = new InnerEdge<V,E>(edgeVal, existVertex, newVertex);
+    public Vertex<V> addVertex(V vertexVal) {
+        InnerVertex<V,E> newVertex = new InnerVertex<>(vertexVal, vertices.size(), isDirected);
         vertices.add(newVertex);
-        existVertex.addEdge(newEdge);
-        newVertex.addEdge((newEdge));
+        return newVertex;
+    }
+
+    @Override
+    public Vertex<V> addVertex(Vertex<V> v, V vertexVal, E edgeVal) {
+        InnerVertex<V,E> existVertex = validateVertex(v);
+        InnerVertex<V,E> newVertex = (InnerVertex<V, E>) addVertex(vertexVal);
+
+        linkVertex(existVertex, newVertex, edgeVal);
+        return newVertex;
+    }
+
+    @Override
+    public Edge<E> linkVertex(Vertex<V> lhs, Vertex<V> rhs, E edgeVal) {
+        InnerVertex<V,E> lhsVert = validateVertex(lhs);
+        InnerVertex<V,E> rhsVert = validateVertex(rhs);
+
+        Edge<E> newEdge = new InnerEdge<V,E>(edgeVal, lhsVert, rhsVert);
+        lhsVert.getOutgoing().add(newEdge);
+        rhsVert.getIncoming().add(newEdge);
+
         return newEdge;
     }
 
@@ -91,7 +115,7 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
     public Edge<E> getEdge(Vertex<V> lhs, Vertex<V> rhs) {
         InnerVertex<V,E> lhsVertex = validateVertex(lhs);
 
-        for(Edge<E> edge : lhsVertex.getEdges()){
+        for(Edge<E> edge : lhsVertex.getOutgoing()){
             for(Vertex<V> vert : ((InnerEdge<V,E>)edge).getEndpoints()){
                 if(vert==rhs){
                     return edge;
@@ -108,7 +132,7 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
 
         for(Vertex<V> vertex : vertices){
             InnerVertex<V,E> innerVertex = validateVertex(vertex);
-            for(Edge<E> existEdge : innerVertex.getEdges()){
+            for(Edge<E> existEdge : innerVertex.getOutgoing()){
                 if(existEdge==edge){
                     int i = 0;
                     for(Vertex<V> resVert : ((InnerEdge<V,E>)existEdge).getEndpoints()){
@@ -139,12 +163,12 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
     public void removeVertex(Vertex<V> vertex) {
         InnerVertex<V,E> innerVertex = validateVertex(vertex);
 
-        for(Edge<E> edge : innerVertex.getEdges()){
-            for(Vertex<V> adjacent : ((InnerEdge<V,E>)edge).getEndpoints()){
-                if(adjacent!=innerVertex){
-                    ((InnerVertex<V,E>)adjacent).removeEdge(edge);
-                }
-            }
+        for(Edge<E> edge : innerVertex.getOutgoing()){
+            removeEdge(edge);
+        }
+
+        for(Edge<E> edge : innerVertex.getIncoming()){
+            removeEdge(edge);
         }
 
         vertices.set(sentinelVertx, innerVertex.getIndex());
@@ -153,7 +177,10 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
     @Override
     public void removeEdge(Edge<E> edge) {
         for(Vertex<V> endpoint : ((InnerEdge<V,E>)edge).getEndpoints()){
-            ((InnerVertex<V,E>)endpoint).removeEdge(edge);
+            ((InnerVertex<V,E>)endpoint).getOutgoing().remove(edge);
+            if(isDirected){
+                ((InnerVertex<V,E>)endpoint).getIncoming().remove(edge);
+            }
         }
     }
 
