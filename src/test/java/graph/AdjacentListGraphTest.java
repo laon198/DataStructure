@@ -27,6 +27,5 @@ class AdjacentListGraphTest {
         graph.linkVertex(v1, v3, 0);
         Vertex<Integer> v8 = graph.addVertex(v3, 8, 0);
         Vertex<Integer> v9 = graph.addVertex(v3, 9, 0);
-
     }
 }

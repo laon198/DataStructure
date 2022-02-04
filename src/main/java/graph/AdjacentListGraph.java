@@ -9,12 +9,11 @@ import java.util.LinkedList;
 public class AdjacentListGraph<V,E> implements Graph<V,E> {
     private static class InnerVertex<V, E> implements Vertex<V>{
         private V element;
-        private final int index;
+        private Position<Vertex<V>> pos;
         private final LinkedList<Edge<E>> outgoing, incoming;
 
-        public InnerVertex(V element, int index, boolean isDirected) {
+        public InnerVertex(V element, boolean isDirected) {
             this.element = element;
-            this.index = index;
             outgoing = new LinkedList<>();
             if(isDirected){
                 incoming = new LinkedList<>();
@@ -23,8 +22,12 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
             }
         }
 
-        public int getIndex() {
-            return index;
+        public Position<Vertex<V>> getPos() {
+            return pos;
+        }
+
+        public void setPos(Position<Vertex<V>> pos){
+            this.pos = pos;
         }
 
         public LinkedList<Edge<E>> getOutgoing(){
@@ -70,8 +73,7 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
     }
 
     private final boolean isDirected;
-    private final ArrayList<Vertex<V>> vertices;
-    private final Vertex<V> sentinelVertx;
+    private final DoublyPositionalList<Vertex<V>> vertices;
 
     public AdjacentListGraph(){
         this(false);
@@ -79,14 +81,13 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
 
     public AdjacentListGraph(boolean isDirected){
         this.isDirected = isDirected;
-        vertices = new ArrayList<>();
-        sentinelVertx = new InnerVertex<>(null, -1, isDirected);
+        vertices = new DoublyPositionalList<>();
     }
 
     @Override
     public Vertex<V> addVertex(V vertexVal) {
-        InnerVertex<V,E> newVertex = new InnerVertex<>(vertexVal, vertices.size(), isDirected);
-        vertices.add(newVertex);
+        InnerVertex<V,E> newVertex = new InnerVertex<>(vertexVal, isDirected);
+        newVertex.setPos(vertices.add(newVertex));
         return newVertex;
     }
 
@@ -171,7 +172,7 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
             removeEdge(edge);
         }
 
-        vertices.set(sentinelVertx, innerVertex.getIndex());
+        vertices.remove(innerVertex.getPos());
     }
 
     @Override
