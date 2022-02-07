@@ -128,6 +128,18 @@ public class AdjacentListGraph<V,E> implements Graph<V,E> {
     }
 
     @Override
+    public Iterable<Edge<E>> getOutEdges(Vertex<V> v) {
+        InnerVertex<V,E> innerVertex = validateVertex(v);
+        return innerVertex.getOutgoing();
+    }
+
+    @Override
+    public Iterable<Edge<E>> getInEdges(Vertex<V> v) {
+        InnerVertex<V,E> innerVertex = validateVertex(v);
+        return innerVertex.getIncoming();
+    }
+
+    @Override
     public Vertex<V>[] getVertices(Edge<E> edge) {
         Vertex<V>[] result = new Vertex[2];
 

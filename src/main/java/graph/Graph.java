@@ -5,6 +5,8 @@ public interface Graph<V,E> {
     Vertex<V> addVertex(Vertex<V> v, V vertexVal, E edgeVal);
     Edge<E> linkVertex(Vertex<V> lhs, Vertex<V> rhs, E edgeVal);
     Edge<E> getEdge(Vertex<V> lhs, Vertex<V> rhs);
+    Iterable<Edge<E>> getOutEdges(Vertex<V> v);
+    Iterable<Edge<E>> getInEdges(Vertex<V> v);
     Vertex<V>[] getVertices(Edge<E> edge);
     void setVertex(Vertex<V> vertex, V vertexVal);
     void setEdge(Edge<E> edge, E edgeVal);
