@@ -4,7 +4,6 @@ import list.ArrayList;
 import list.List;
 
 public class BubbleSort {
-    //N제곱 시간복잡도
     public static void sort(List<Integer> list){
         for(int i=0; i<list.size(); i++){
             for(int j=0; j<list.size()-i-1; j++){
