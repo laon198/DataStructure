@@ -6,10 +6,16 @@ import list.ArrayList;
 import java.util.Comparator;
 
 public class BinaryHeap<K,V> extends AbstractPriorityQueue<K,V> {
-    private final ArrayList<Entry<K,V>> list = new ArrayList<>();
+    private ArrayList<Entry<K,V>> list;
+
+    public BinaryHeap(ArrayList<Entry<K,V>> list){
+        super();
+        this.list = list;
+    }
 
     public BinaryHeap(){
         super();
+        list = new ArrayList<>();
     }
 
     public BinaryHeap(Comparator<K> comparator){
