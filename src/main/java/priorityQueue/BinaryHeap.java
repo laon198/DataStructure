@@ -2,15 +2,17 @@ package priorityQueue;
 
 import common.Entry;
 import list.ArrayList;
+import list.List;
 
 import java.util.Comparator;
 
 public class BinaryHeap<K,V> extends AbstractPriorityQueue<K,V> {
-    private ArrayList<Entry<K,V>> list;
+    private List<Entry<K,V>> list;
 
-    public BinaryHeap(ArrayList<Entry<K,V>> list){
+    public BinaryHeap(List<Entry<K,V>> list){
         super();
         this.list = list;
+        heapify();
     }
 
     public BinaryHeap(){
@@ -44,7 +46,7 @@ public class BinaryHeap<K,V> extends AbstractPriorityQueue<K,V> {
         checkKey(key);
         Entry<K,V> newest = new PQEntry<>(key, value);
         list.add(newest);
-        upheap();
+        upheap(size()-1);
     }
 
     @Override
@@ -62,7 +64,7 @@ public class BinaryHeap<K,V> extends AbstractPriorityQueue<K,V> {
     }
 
     private void heapify() {
-        for(int i=(list.size()-1)/2; i>0; i--){
+        for(int i=(size()-1)/2; i>=0; i--){
             downheap(i);
         }
     }
@@ -81,12 +83,17 @@ public class BinaryHeap<K,V> extends AbstractPriorityQueue<K,V> {
                 minChildIndex = getRightIdx(curIndex);
             }
 
-            swap(curIndex, minChildIndex);
+            if(comp.compare(
+                    list.get(curIndex).getKey(),
+                        list.get(minChildIndex).getKey())>0){
+                swap(curIndex, minChildIndex);
+            }
+
             curIndex = minChildIndex;
         }
     }
 
-    private void upheap(){
+    private void upheap(int idx){
         int curIdx = size()-1;
         int parentIdx = getParentIdx(curIdx);
 
