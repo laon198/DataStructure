@@ -4,36 +4,43 @@ import list.ArrayList;
 import list.List;
 
 public class RecursiveMergeSort {
-    // divid의 역할
+    // divide 역할
     public static void sort(List<Integer> list){
-        if(list.size()<2){
+        ArrayList<Integer> res = new ArrayList<>(list.size());
+        for(int i=0; i<list.size(); i++){
+            res.add(0);
+        }
+
+        sort(list, res, 0, list.size()-1);
+    }
+
+    private static void sort(List<Integer> list, List<Integer> res, int low, int high){
+        if(low==high){
             return;
         }
 
-        int mid = list.size()/2;
-        List<Integer> left = new ArrayList<>();
-        List<Integer> right = new ArrayList<>();
-        fillList(list, left, 0, mid);
-        fillList(list, right, mid, list.size());
-
-        sort(left);
-        sort(right);
-
-        merge(left, right, list);
+        int mid = (low+high)/2;
+        sort(list, res, low, mid);
+        sort(list, res, mid+1, high);
+        merge(list, res, low, high);
     }
 
     // conquer(정렬)의 역할
-    private static void merge(List<Integer> left, List<Integer> right, List<Integer> res){
-        int i = 0, j = 0;
+    private static void merge(List<Integer> list, List<Integer> res, int low, int high){
+        int mid = (low+high)/2;
+        int i = low;
+        int j = mid+1;
 
-        while(i+j<res.size()){
-            if(j>=right.size() || (i<left.size() && left.get(i)<right.get(j))){
-                res.set(left.get(i), i+j);
-                i++;
+        for(int k=low; k<=high; k++){
+            if(j>high || (i<mid+1 && list.get(i)<list.get(j))){
+                res.set(list.get(i++), k);
             }else{
-                res.set(right.get(j), i+j);
-                j++;
+                res.set(list.get(j++), k);
             }
+        }
+
+        for(int k=low; k<=high; k++){
+            list.set(res.get(k), k);
         }
     }
 
