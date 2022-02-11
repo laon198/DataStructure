@@ -14,7 +14,7 @@ public class RecursiveQuickSort {
             return;
         }
 
-        int pivotIdx = partition(list, low, low + 1, high);
+        int pivotIdx = partition(list, low, low, high);
 
         sort(list, low, pivotIdx - 1);
         sort(list, pivotIdx + 1, high);
@@ -39,12 +39,8 @@ public class RecursiveQuickSort {
         }
 
 
-        if(list.get(left)>pivot){
-            return pivotIdx;
-        }else{
-            swap(list, pivotIdx, left);
-            return left;
-        }
+        swap(list, pivotIdx, left);
+        return left;
     }
 
     private static void swap(List<Integer> list, int i, int j) {
