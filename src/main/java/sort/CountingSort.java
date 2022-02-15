@@ -20,9 +20,9 @@ public class CountingSort {
 
         //정렬
         int[] tmp = new int[list.size()];
-        for(int i : list){
-            int index = --counter[i];
-            tmp[index] = i;
+        for(int i=list.size()-1; i>=0; i--){
+            int index = --counter[list.get(i)];
+            tmp[index] = list.get(i);
         }
 
         //복사
